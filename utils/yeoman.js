@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
-const path = require('path');
-const configUtils = require('./config');
-const _ = require('underscore.string');
-const C = require('./constants');
+const path = require("path");
+const configUtils = require("./config");
+const _ = require("underscore.string");
+const C = require("./constants");
 
 // Needed directory paths
 const baseName = path.basename(process.cwd());
@@ -26,88 +26,100 @@ let getBaseDir = () => {
  * @param {String} cssClsPrefix Prefix to prepended to the component class name
  * @return {Object} Component settings
  */
-let getAllSettingsFromComponentName = (componentName, style, useCssModules, isPure, generatorVersion, cssClsPrefix) => {
-
+let getAllSettingsFromComponentName = (
+  componentName,
+  style,
+  useCssModules,
+  isPure,
+  generatorVersion,
+  cssClsPrefix
+) => {
   // Use css per default
-  if(!style) {
-    style = 'css';
+  if (!style) {
+    style = "css";
   }
 
   // Use version 3 fallback as default for projects
-  if(!generatorVersion) {
+  if (!generatorVersion) {
     generatorVersion = 3;
   }
 
   // Clean up the path and pull it to parts
   let cleanedPaths = getCleanedPathName(componentName);
-  let componentParts = cleanedPaths.split('/');
+  let componentParts = cleanedPaths.split("/");
   let componentBaseName = _.capitalize(componentParts.pop());
-  let componentPartPath = componentParts.join('/');
+  let componentPartPath = componentParts.join("/");
 
   // Get the components displayName property
-  let componentFullName = _.classify(_.replaceAll(componentName, '/', '_'));
+  let componentFullName = _.classify(_.replaceAll(componentName, "/", "_"));
 
   // Configure Styles
-  let stylePaths = configUtils.getChoiceByKey('path', 'style');
-  let styleSettings = configUtils.getChoiceByKey('style', style);
+  let stylePaths = configUtils.getChoiceByKey("path", "style");
+  let styleSettings = configUtils.getChoiceByKey("style", style);
 
   // Configure components
-  let componentPath = configUtils.getChoiceByKey('path', 'component');
+  let componentPath = configUtils.getChoiceByKey("path", "component");
 
   // Configure tests
-  let testPath = configUtils.getChoiceByKey('path', 'test');
+  let testPath = configUtils.getChoiceByKey("path", "test");
 
   let settings;
 
-  switch(generatorVersion) {
-
+  switch (generatorVersion) {
     case 4:
       settings = {
         style: {
-          webpackPath: `./${componentBaseName.toLowerCase()}${useCssModules ? '.cssmodule' : ''}${styleSettings.suffix}`,
+          webpackPath: `./${componentBaseName}${useCssModules ? ".cssmodule" : ""}${styleSettings.suffix}`,
           path: path.normalize(`${componentPath.path}/${componentPartPath}/`),
-          fileName: `${componentBaseName.toLowerCase()}${useCssModules ? '.cssmodule' : ''}${styleSettings.suffix}`,
+          fileName: `${componentBaseName}${useCssModules ? ".cssmodule" : ""}${styleSettings.suffix}`,
           className: getComponentStyleName(cssClsPrefix + componentBaseName),
           suffix: styleSettings.suffix
         },
         component: {
-          webpackPath: path.normalize(`components/${componentPartPath}/${componentBaseName}.js`),
+          webpackPath: `.${componentPartPath}/${componentBaseName}.jsx`,
           path: path.normalize(`${componentPath.path}/${componentPartPath}/`),
-          fileName: `${componentBaseName}.js`,
+          fileName: `${componentBaseName}.jsx`,
           className: `${componentBaseName}`,
-          classBase: isPure ? 'React.PureComponent' : 'React.Component',
+          classBase: isPure ? "React.PureComponent" : "React.Component",
           displayName: `${componentFullName}`,
-          suffix: '.js'
+          suffix: ".jsx"
         },
         test: {
-          path: path.normalize(`${testPath.path}/components/${componentPartPath}/`),
-          fileName: `${componentBaseName}Test.js`
+          path: path.normalize(
+            `${testPath.path}/components/${componentPartPath}/`
+          ),
+          fileName: `${componentBaseName}.spec.jsx`
         }
       };
       break;
-
     // Use version 3 style for the defaults and fallback
     // @deprecated
     case 3:
     default:
       settings = {
         style: {
-          webpackPath: path.normalize(`styles/${componentPartPath}/${componentBaseName}${styleSettings.suffix}`),
+          webpackPath: path.normalize(
+            `styles/${componentPartPath}/${componentBaseName}${styleSettings.suffix}`
+          ),
           path: path.normalize(`${stylePaths.path}/${componentPartPath}/`),
           fileName: `${componentBaseName}${styleSettings.suffix}`,
           className: getComponentStyleName(componentBaseName),
           suffix: styleSettings.suffix
         },
         component: {
-          webpackPath: path.normalize(`components/${componentPartPath}/${componentBaseName}Component.js`),
+          webpackPath: path.normalize(
+            `components/${componentPartPath}/${componentBaseName}Component.js`
+          ),
           path: path.normalize(`${componentPath.path}/${componentPartPath}/`),
           fileName: `${componentBaseName}Component.js`,
           className: `${componentBaseName}Component`,
           displayName: `${componentFullName}Component`,
-          suffix: '.js'
+          suffix: ".js"
         },
         test: {
-          path: path.normalize(`${testPath.path}/components/${componentPartPath}/`),
+          path: path.normalize(
+            `${testPath.path}/components/${componentPartPath}/`
+          ),
           fileName: `${componentBaseName}ComponentTest.js`
         }
       };
@@ -124,18 +136,21 @@ let getAllSettingsFromComponentName = (componentName, style, useCssModules, isPu
  * @return {String}
  */
 let getCleanedPathName = (path, suffix) => {
-
-  if(!suffix) {
-    suffix = '';
+  if (!suffix) {
+    suffix = "";
   }
 
   // If we have filesystem separators, use them to build the full path
-  let pathArray = path.split('/');
+  let pathArray = path.split("/");
 
   // Build the full components name
-  return pathArray.map((path) => {
-    return _.camelize(_.slugify(_.humanize(path)));
-  }).join('/') + _.capitalize(suffix);
+  return (
+    pathArray
+      .map(path => {
+        return _.camelize(_.slugify(_.humanize(path)));
+      })
+      .join("/") + _.capitalize(suffix)
+  );
 };
 
 /**
@@ -143,9 +158,11 @@ let getCleanedPathName = (path, suffix) => {
  * @param  {String} path
  * @return {String}
  */
-let getComponentStyleName = (path) => {
-  let fileName = path.split('/').pop().toLowerCase();
-  return _.slugify(_.humanize(fileName)) + '-component';
+let getComponentStyleName = path => {
+  let fileName = path.split("/").pop();
+  return fileName;
+  // let fileName = path.split('/').pop().toLowerCase();
+  // return _.slugify(_.humanize(fileName)) + '-component';
 };
 
 /**
@@ -153,10 +170,9 @@ let getComponentStyleName = (path) => {
  * @param  {String} appName The input application name [optional]
  * @return {String}
  */
-let getAppName = (appName) => {
-
+let getAppName = appName => {
   // If appName is not given, use the current directory
-  if(appName === undefined) {
+  if (appName === undefined) {
     appName = getBaseDir();
   }
 
@@ -171,20 +187,19 @@ let getAppName = (appName) => {
  * @return {String} Final path
  */
 let getDestinationPath = (name, type, suffix) => {
-
   let cleanedPaths = getCleanedPathName(name, suffix);
-  let fsParts = cleanedPaths.split('/');
+  let fsParts = cleanedPaths.split("/");
   let actionBaseName = _.capitalize(fsParts.pop());
-  let partPath = fsParts.join('/');
+  let partPath = fsParts.join("/");
 
-  let fsPath = configUtils.getChoiceByKey('path', type).path;
+  let fsPath = configUtils.getChoiceByKey("path", type).path;
 
-  let parts = [ fsPath ];
-  if(partPath.length > 0) {
+  let parts = [fsPath];
+  if (partPath.length > 0) {
     parts.push(partPath);
   }
   parts.push(actionBaseName);
-  let fullPath = parts.join('/');
+  let fullPath = parts.join("/");
 
   return `${fullPath}.js`;
 };
@@ -197,9 +212,8 @@ let getDestinationPath = (name, type, suffix) => {
  * @return {String} The javascript class name to use
  */
 let getDestinationClassName = (name, type, suffix) => {
-
   let fixedName = getDestinationPath(name, type, suffix);
-  return _.capitalize(fixedName.split('/').pop().split('.js')[0]);
+  return _.capitalize(fixedName.split("/").pop().split(".js")[0]);
 };
 
 /**
@@ -210,13 +224,12 @@ let getDestinationClassName = (name, type, suffix) => {
  * @return {string} The template filename including the .js suffix
  */
 let getComponentTemplateName = (isStateless, useStyles, useCssModules) => {
-  const componentTypeFrag = isStateless ? C.COMP_TYPES.STATELESS : C.COMP_TYPES.STATEFUL;
+  const componentTypeFrag = isStateless
+    ? C.COMP_TYPES.STATELESS
+    : C.COMP_TYPES.STATEFUL;
   const styleTypeFrag = !useStyles
     ? C.STYLE_TYPES.NO_STYLES
-    : useCssModules
-      ? C.STYLE_TYPES.WITH_CSSMODULES
-      : C.STYLE_TYPES.WITH_STYLES
-    ;
+    : useCssModules ? C.STYLE_TYPES.WITH_CSSMODULES : C.STYLE_TYPES.WITH_STYLES;
 
   return `${componentTypeFrag}${styleTypeFrag}.js`;
 };
