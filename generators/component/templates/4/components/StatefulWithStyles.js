@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from "prop-types";
 import '<%= style.webpackPath %>';
 
 class <%= component.className %> extends <%= component.classBase %> {

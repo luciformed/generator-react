@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from "prop-types";
 
 const <%= component.className %> = () => (
   <div className="<%= style.className %>">

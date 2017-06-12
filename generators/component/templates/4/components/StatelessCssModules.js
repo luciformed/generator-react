@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from "prop-types";
 import cssmodules from 'react-css-modules';
 import styles from '<%= style.webpackPath %>';
 
