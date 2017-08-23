@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import <%= component.className %> from '<%= component.webpackPath %>';
 
-describe('<<%= component.className %> />', function () {
+describe('<<%= component.className %> />', () => {
 
   let props;
   let mountedComponent;
@@ -20,9 +20,9 @@ describe('<<%= component.className %> />', function () {
     mountedComponent = undefined;
   });
 
-  describe('when rendering the component', function () {
+  describe('when rendering the component', () => {
 
-    it('should have a className of "<%= style.className %>"', function () {
+    it('should have a className of "<%= style.className %>"', () => {
       expect(render().hasClass('<%= style.className %>')).toBe(true);
     });
   });

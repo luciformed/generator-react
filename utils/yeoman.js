@@ -76,7 +76,7 @@ let getAllSettingsFromComponentName = (
           suffix: styleSettings.suffix
         },
         component: {
-          webpackPath: `.${componentPartPath}/${componentBaseName}.jsx`,
+          webpackPath: `.${componentPartPath}/${componentBaseName}`,
           path: path.normalize(`${componentPath.path}/${componentPartPath}/`),
           fileName: `${componentBaseName}.jsx`,
           className: `${componentBaseName}`,
