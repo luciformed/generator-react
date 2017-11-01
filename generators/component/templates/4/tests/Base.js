@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import <%= component.className %> from '<%= component.webpackPath %>';
+import styles from '<%= style.webpackPath %>';
 
 describe('<<%= component.className %> />', () => {
 
@@ -23,7 +24,7 @@ describe('<<%= component.className %> />', () => {
   describe('when rendering the component', () => {
 
     it('should have a className of "<%= style.className %>"', () => {
-      expect(render().hasClass('<%= style.className %>')).toBe(true);
+      expect(render().hasClass(styles.root)).toBe(true);
     });
   });
 });

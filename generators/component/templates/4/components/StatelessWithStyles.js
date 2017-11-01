@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from "prop-types";
-import '<%= style.webpackPath %>';
+import styles from '<%= style.webpackPath %>';
 
 const <%= component.className %> = () => (
-  <div className="<%= style.className %>">
+  <div className={styles.root}>
     Please edit <%= component.path %><%= component.fileName %> to update this component!
   </div>
 );
