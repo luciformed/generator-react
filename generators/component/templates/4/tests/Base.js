@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 import <%= component.className %> from '<%= component.webpackPath %>';
+
 import styles from '<%= style.webpackPath %>';
 
 describe('<<%= component.className %> />', () => {
@@ -10,7 +11,7 @@ describe('<<%= component.className %> />', () => {
 
   const render = () => {
     if (!mountedComponent) {
-      mountedComponent = mount(<<%= component.className %> {...props} />);
+      mountedComponent = shallow(<<%= component.className %> {...props} />);
 
     }
     return mountedComponent;
@@ -23,7 +24,7 @@ describe('<<%= component.className %> />', () => {
 
   describe('when rendering the component', () => {
 
-    it('should have a className of "<%= style.className %>"', () => {
+    it(`should have a className of "${styles.root}"`, () => {
       expect(render().hasClass(styles.root)).toBe(true);
     });
   });
