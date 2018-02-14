@@ -24,8 +24,8 @@ describe('<<%= component.className %> />', () => {
 
   describe('when rendering the component', () => {
 
-    it(`should have a className of "${styles.root}"`, () => {
-      expect(render().hasClass(styles.root)).toBe(true);
+    it('should not throw any errors', () => {
+      expect(render).not.toThrow();
     });
   });
 });
