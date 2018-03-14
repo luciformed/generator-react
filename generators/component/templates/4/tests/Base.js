@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import <%= component.className %> from '<%= component.webpackPath %>';
 
-import styles from '<%= style.webpackPath %>';
+// import styles from '<%= style.webpackPath %>';
 
 describe('<<%= component.className %> />', () => {
 
