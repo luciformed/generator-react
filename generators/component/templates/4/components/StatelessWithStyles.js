@@ -1,12 +1,24 @@
 import React from 'react';
 import PropTypes from "prop-types";
+
+import { compose, mapProps, setDisplayName } from 'recompose';
+
+import { Logger } from 'components/shared/util';
+
 import styles from '<%= style.webpackPath %>';
 
-const <%= component.className %> = () => (
-  <div className={styles.root}>
-    Please edit <%= component.path %><%= component.fileName %> to update this component!
-  </div>
-);
+const logger = Logger('<<%= component.displayName %>/>');
+
+const withPropsLogger = mapProps(logger.prepend("props"));
+
+const <%= component.className %> = compose(
+    withPropsLogger,
+    setDisplayName('<%= component.displayName %>Base'))(
+    () => (
+      <div className={styles.root}>
+        Please edit <%= component.path %><%= component.fileName %> to update this component!
+      </div>
+));
 
 <%= component.className %>.displayName = '<%= component.displayName %>';
 <%= component.className %>.propTypes = {};
